@@ -1,0 +1,19 @@
+{
+  "name": "mobile-pro-planner",
+  "version": "1.0.0",
+  "description": "SPA for managing customers, employees, appointments, and invoices.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jamesmanone/mobile-pro-planner.git"
+  },
+  "author": "James Martin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jamesmanone/mobile-pro-planner/issues"
+  },
+  "homepage": "https://github.com/jamesmanone/mobile-pro-planner#readme"
+}
