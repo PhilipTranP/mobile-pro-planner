@@ -15,5 +15,13 @@
   "bugs": {
     "url": "https://github.com/jamesmanone/mobile-pro-planner/issues"
   },
-  "homepage": "https://github.com/jamesmanone/mobile-pro-planner#readme"
+  "homepage": "https://github.com/jamesmanone/mobile-pro-planner#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "mongodb": "^2.2.29",
+    "mongoose": "^4.11.1",
+    "sequelize": "^4.2.1"
+  }
 }
