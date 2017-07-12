@@ -29,3 +29,18 @@ module.exports.getInvite = code => {
     .populate('employee')
     .exec();
 }
+
+module.exports.make = (employee, permissions) => {
+  const opts = 'qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM1234567890';
+  let code = '';
+  for(let i=0;i<16;i++) {
+    code += opts.charAt(Math.floor(Math.random() * 62));
+  }
+  let invite = new Invite({
+    employee: employee._id,
+    permissions: permissions,
+    code: code
+  });
+  invite.save();
+  return invite.code;
+}

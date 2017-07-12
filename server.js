@@ -2,9 +2,30 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const User = require('./models/User.js')
+const Invite = require('./models/Invite.js')
 
 // Connect to db
 mongoose.connect('mogodb://localhost/mobilepro')
+
+// Create superuser invite if no superuser
+mongoose.commection.once('open', () => {
+  User.findOne({permissions: 3}).exec();
+    .then(user => {
+      user.permissions === 3 || throw new Error('no superuser');
+      return {permissions: 3};
+    })
+    .catch(e => {
+      e === 'no superuser' &&
+      Invite.findOne({permissions: 3}).exec()
+        .then(invite => {
+          invite.permissions === 3 || throw new Error('no invite');
+        });
+    })
+    .catch(e => {
+      e === 'no invite' && console.log('New Superuser Invite code: '+require('./make-super-user.js')());
+    })
+})
 
 // Instantiate app
 const app = express();
