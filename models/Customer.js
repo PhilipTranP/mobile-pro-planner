@@ -41,7 +41,7 @@ module.exports.addPhone = (id, phone) => {
         customer.phonenumber.push(phone);
         customer.save();
         resolve(customer);
-      })
+      });
   });
 }
 
@@ -51,6 +51,28 @@ module.exports.deletePhone = (id, phoneId) => {
       .then(customer => {
         if(!customer) reject('no cx');
         resolve(customer);
-      })
+      });
+  });
+}
+
+module.exports.addAddress = (id, address) => {
+  return new Promise((resolve, reject) => {
+    Customer.findById(id)
+      .then(customer => {
+        if(!customer) reject('no cx');
+        customer.address.push(address);
+        customer.save();
+        resolve(customer);
+      });
+  });
+}
+
+module.exports.deleteAddress = (id, addressId) => {
+  return new Promise((resolve, reject) => {
+    Customer.findByIdAndUpdate(id, { $pull: { address: { _id:addressId } } })
+      .then(customer => {
+        if(!customer) reject('no cx');
+        resolve(customer);
+      });
   });
 }
