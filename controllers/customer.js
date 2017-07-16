@@ -42,7 +42,7 @@ router.put(
   }
 );
 
-// Phone number add and delete
+// Phone number add/edit/delete
 router.put(
   '/:cx/phone',
   passport.authenticate('jwt', {session: false}),
@@ -112,7 +112,7 @@ router.put(
   }
 );
 
-// Address add and delete
+// Address add/edit/delete
 router.put(
   '/:cx/address',
   passport.authenticate('jwt', {session: false}),
@@ -165,6 +165,33 @@ router.put(
       msg: 'All fields except Zip are required'
     });
     Customer.editAddress(req.params.cx, req.params.address, address)
+      .then(customer =>
+        res.json({
+          success: true,
+          customer: customer
+        })
+      )
+      .catch(e =>
+        res.status(404).send('Not Found')
+      );
+  }
+);
+
+// Add/delete comments
+router.put(
+  '/:cx/comment',
+  passport.authenticate('jwt', {session: false}),
+  (req, res) => {
+    const { comment } = req.body;
+    if(!comment) return res.json({
+      success: false,
+      msg: 'Comments are made out of words. Use some.'
+    });
+    const newComment = {
+      body: comment,
+      employee: req.user
+    };
+    Customer.addComment(req.params.cx, newComment)
       .then(customer =>
         res.json({
           success: true,

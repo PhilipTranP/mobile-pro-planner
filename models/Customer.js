@@ -116,3 +116,17 @@ module.exports.editAddress = (id, addressId, address) => {
       .then(() => resolve(cx));
   });
 }
+
+module.exports.addComment = (id, comment) => {
+  return new Promise((resolve, reject) => {
+    let cx;
+    Customer.findById(id)
+      .then(customer => {
+        if(!customer) reject('no cx');
+        cx = customer;
+        customer.comments.push(comment);
+        return customer.save();
+      })
+      .then(() => resolve(cx))
+  });
+}
