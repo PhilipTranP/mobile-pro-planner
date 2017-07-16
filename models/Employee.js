@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const model = mongoose.model;
 const phonenumber = require('./embeds/phonenumber');
 
 mongoose.Promise = global.Promise
@@ -14,4 +13,4 @@ const employee = new Schema({
   phonenumber: [phonenumber]
 });
 
-const Employee = module.exports = model('Employee', employee);
+const Employee = module.exports = mongoose.model('Employee', employee);

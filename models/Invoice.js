@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const model = mongoose.model;
 const LineItem = require('./embeds/LineItem.js');
 const Address = require('./embeds/Address.js')
 
@@ -33,4 +32,4 @@ invoice.virtual('total').get(() => {
   return total;
 });
 
-const Invoice = module.exports = model('Invoice', invoice);
+const Invoice = module.exports = mongoose.model('Invoice', invoice);

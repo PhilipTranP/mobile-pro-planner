@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
+const Employee = require('./Employee.js')
 const Schema = mongoose.Schema;
-const model = mongoose.model;
 
 mongoose.Promise = global.Promise
 
@@ -25,7 +25,9 @@ const user = new Schema({
   }
 });
 
-const User = module.exports = model('User', user);
+const User = mongoose.model('User', user);
+
+module.exports = User
 
 module.exports.byUsername = username => {
   return User.findOne({username: username})

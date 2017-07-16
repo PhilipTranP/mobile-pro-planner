@@ -8,6 +8,6 @@ const owner = {
 module.exports = () => {
   const employee = new Employee(owner);
   employee.save();
-  const invite = Invite.make();
+  const invite = Invite.make(employee, 3);
   return invite;
 }

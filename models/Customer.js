@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const model = mongoose.model;
 const address = require('./embed/Address.js')
 const phonenumber = require('./embeds/Phonenumber.js');
 const comment = require('./embeds/Comment.js');
@@ -25,7 +24,7 @@ const customer = new Schema({
   }]
 });
 
-const Customer = module.exports = model('Customer', customer);
+const Customer = module.exports = mongoose.model('Customer', customer);
 
 module.exports.byName = name => {
   const query = Customer.findOne({name: name});

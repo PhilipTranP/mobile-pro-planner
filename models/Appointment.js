@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const model = mongoose.model;
 const Address = require('./embeds/Address.js');
 const Comment = require('./embeds/Comment.js')
 
@@ -27,4 +26,4 @@ const appointment = new Schema({
   }]
 });
 
-const Appointment = module.exports = model('Appointment', appointment);
+const Appointment = module.exports = mongoose.model('Appointment', appointment);

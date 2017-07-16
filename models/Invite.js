@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const model = mongoose.model;
 
 mongoose.Promise = global.Promise
 
@@ -22,7 +21,7 @@ const invite = new Schema({
   }
 });
 
-const Invite = module.exports = model('Invite', invite);
+const Invite = module.exports = mongoose.model('Invite', invite);
 
 module.exports.getInvite = code => {
   return Invite.findOne({code: code})

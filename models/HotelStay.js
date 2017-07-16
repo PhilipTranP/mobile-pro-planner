@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const model = mongoose.model;
 
 mongoose.Promise = global.Promise
 
@@ -24,4 +23,4 @@ const hotelStay = new Schema({
   }
 });
 
-const HotelStay = module.exports = model('HotelStay', hotelStay);
+const HotelStay = module.exports = mongoose.model('HotelStay', hotelStay);
