@@ -19,7 +19,7 @@ router.get(
     .then(customers => res.json(customers));
 });
 
-router.post(
+router.put(
   '/new',
   passport.authenticate('jwt', {session: false}),
   (req, res) => {
@@ -43,7 +43,7 @@ router.post(
 );
 
 // Phone number add and delete
-router.post(
+router.put(
   '/:cx/phone',
   passport.authenticate('jwt', {session: false}),
   (req, res) => {
@@ -92,7 +92,7 @@ router.delete(
 );
 
 // Address add and delete
-router.post(
+router.put(
   '/:cx/address',
   passport.authenticate('jwt', {session: false}),
   (req, res) => {
