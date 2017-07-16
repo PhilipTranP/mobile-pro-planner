@@ -39,3 +39,7 @@ module.exports.register = user => {
   user.passhash = bcrypt.hashSync(user.passhash, 10);
   user.save();
 }
+
+module.exports.checkPasswd = (password, passhash) => {
+  return bcrypt.compareSync(password, passhash);
+}

@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const passport = require('passport');
 const User = require('./models/User.js');
 const Invite = require('./models/Invite.js');
 
@@ -40,6 +41,10 @@ const app = express();
 // Parse JSON
 app.use(bodyParser.json());
 
+// Init passport
+app.use(passport.initialize());
+require('./config/jwtconfig')(passport);
+
 // FOR DEVELOPMENT ONLY!
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*')
@@ -59,7 +64,7 @@ app.listen(5000, () => {
   const timestamp = new Date();
   const minutes = timestamp.getMinutes() > 9 ? timestamp.getMinutes() : `0${timestamp.getMinutes()}`
   const seconds = timestamp.getSeconds() > 9 ? timestamp.getSeconds() : `0${timestamp.getSeconds()}`
-  console.log(`Server started at \
-    ${timestamp.getHours()}:${minutes}:${seconds}`);
+  console.log(`
+Server started at ${timestamp.getHours()}:${minutes}:${seconds}`);
   console.log('Listning on http://localhost:5000');
 });
