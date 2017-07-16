@@ -91,23 +91,38 @@ router.delete(
   }
 );
 
+router.put(
+  ':cx/phone/:phone',
+  passport.authenticate('jwt', {session: false}),
+  (req, res) => {
+    if(!checkPermissions(req.user, 1)) return lowPermissions();
+    const { phone } = req.body;
+    if(!phone.number) return res.json({
+      success: false,
+      msg: 'A phone number is required'
+    });
+    return Customer.editPhone(req.params.cx, req.params.phone, phone)
+      .then(customer => res.json({
+        success: true,
+        customer: customer
+      }))
+      .catch(e =>
+        res.status(404).send('Not Found')
+      );
+  }
+);
+
 // Address add and delete
 router.put(
   '/:cx/address',
   passport.authenticate('jwt', {session: false}),
   (req, res) => {
     if(!checkPermissions(req.user, 2)) return lowPermissions();
-    const { street, city, state, zip } = req.body; // Destructure form
-    if(!(street && city && state)) return res.json({
+    const { address } = req.body; // Destructure form
+    if(!(address.street && address.city && address.state)) return res.json({
       success: false,
       msg: 'All fields except Zip are required'
     });
-    const address = {
-      street: street,
-      city: city,
-      state: state,
-      zip: zip
-    }
     Customer.addAddress(req.params.cx, address)
       .then(customer =>
         res.json({
@@ -137,6 +152,29 @@ router.delete(
         res.status(404).send('Not Found')
       );
   }
-)
+);
+
+router.put(
+  '/:cx/address/:address',
+  passport.authenticate('jwt', {session: false}),
+  (req, res) => {
+    if(!checkPermissions(req.user, 1)) return lowPermissions();
+    const { address } = req.body;
+    if(!(address.street && address.city && address.state)) return res.json({
+      success: false,
+      msg: 'All fields except Zip are required'
+    });
+    Customer.editAddress(req.params.cx, req.params.address, address)
+      .then(customer =>
+        res.json({
+          success: true,
+          customer: customer
+        })
+      )
+      .catch(e =>
+        res.status(404).send('Not Found')
+      );
+  }
+);
 
 module.exports = router;

@@ -47,11 +47,31 @@ module.exports.addPhone = (id, phone) => {
 
 module.exports.deletePhone = (id, phoneId) => {
   return new Promise((resolve, reject) => {
-    Customer.findByIdAndUpdate(id, { $pull: { phonenumber: { _id:phoneId } } })
+    Customer.findByIdAndUpdate(id,
+                              { $pull: { phonenumber: { _id:phoneId } } },
+                              {new: true})
       .then(customer => {
         if(!customer) reject('no cx');
         resolve(customer);
       });
+  });
+}
+
+module.exports.editPhone = (id, phoneId, phone) => {
+  return new Promise((resolve, reject) => {
+    let cx;
+    Customer.findById(id)
+      .then(customer => {
+        if(!customer) reject('no cx');
+        cx = customer;
+        return customer.phonenumber.id(phoneId)
+      })
+      .then(phoneRecord => {
+        if(!phoneRecord) reject('no ph');
+        phoneRecord.set(phone);
+        return cx.save();
+      })
+      .then(() => resolve(cx));
   });
 }
 
@@ -69,10 +89,30 @@ module.exports.addAddress = (id, address) => {
 
 module.exports.deleteAddress = (id, addressId) => {
   return new Promise((resolve, reject) => {
-    Customer.findByIdAndUpdate(id, { $pull: { address: { _id:addressId } } })
+    Customer.findByIdAndUpdate(id,
+                              { $pull: { address: { _id:addressId } } },
+                              {new:true})
       .then(customer => {
         if(!customer) reject('no cx');
         resolve(customer);
       });
+  });
+}
+
+module.exports.editAddress = (id, addressId, address) => {
+  return new Promise((resolve, reject) => {
+    let cx;
+    Customer.findById(id)
+      .then(customer => {
+        if(!customer) reject('no cx');
+        cx = customer;
+        return customer.address.id(addressId)
+      })
+      .then(addressRecord => {
+        if(!addressRecord) reject('no ad');
+        addressRecord.set(address);
+        return cx.save();
+      })
+      .then(() => resolve(cx));
   });
 }
