@@ -130,3 +130,22 @@ module.exports.addComment = (id, comment) => {
       .then(() => resolve(cx))
   });
 }
+
+module.exports.deleteComment = (id, commentId, user) => {
+  return new Promise((resolve, reject) => {
+    let cx;
+    Customer.findById(id)
+      .then(customer => {
+        if(!customer) reject('no cx');
+        cx = customer;
+        return customer.comments.id(commentId);
+      })
+      .then(comment => {
+        console.log(comment);
+        if(comment.employee !== user && user.permissions < 2) reject('unauthorized');
+        cx.comments.pull({_id:commentId})
+        return cx.save();
+      })
+      .then(cx => resolve(cx));
+  });
+}

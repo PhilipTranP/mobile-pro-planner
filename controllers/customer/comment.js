@@ -36,7 +36,18 @@ router.delete(
   '/:cx/comment/:comment',
   passport.authenticate('jwt', {session: false}),
   (req, res) => {
-    return res.send(req.params.cx)
+    const { cx, comment } = req.params;
+    Customer.deleteComment(cx, comment, req.user)
+      .then(customer =>
+        res.json({
+          success: true,
+          customer: customer
+        })
+      )
+      .catch(e => {
+        if(e == 'no cx') return res.status(404).send('Not Found');
+        return res.status(401).send(e)
+      });
   }
 );
 
