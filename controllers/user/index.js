@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User');
-const Invite = require('../models/Invite');
+const User = require('../../models/User');
+const Invite = require('../../models/Invite');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
-const secret = require('../config/secret')
+const secret = require('../../config/secret')
 
 
 // New User Registration

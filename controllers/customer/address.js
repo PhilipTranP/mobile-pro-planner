@@ -10,7 +10,7 @@ router.put(
   '/:cx/address',
   passport.authenticate('jwt', {session: false}),
   (req, res) => {
-    if(!checkPermissions(req.user, 2)) return lowPermissions();
+    if(!checkPermissions(req.user, 2)) return lowPermissions(res);
     const { address } = req.body; // Destructure form
     if(!(address.street && address.city && address.state)) return res.json({
       success: false,
@@ -33,7 +33,7 @@ router.delete(
   '/:cx/address/:address',
   passport.authenticate('jwt', {session: false}),
   (req, res) => {
-    if(!checkPermissions(req.user, 2)) return lowPermissions();
+    if(!checkPermissions(req.user, 2)) return lowPermissions(res);
     Customer.deleteAddress(req.params.cx, req.params.address)
       .then(customer =>
         res.json({
@@ -51,7 +51,7 @@ router.put(
   '/:cx/address/:address',
   passport.authenticate('jwt', {session: false}),
   (req, res) => {
-    if(!checkPermissions(req.user, 1)) return lowPermissions();
+    if(!checkPermissions(req.user, 1)) return lowPermissions(res);
     const { address } = req.body;
     if(!(address.street && address.city && address.state)) return res.json({
       success: false,

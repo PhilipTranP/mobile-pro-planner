@@ -53,8 +53,7 @@ app.use((req, res, next) => {
 });
 
 // Import routers
-app.use('/user', require('./controllers/user'));
-app.use('/customer', require('./controllers/customer'));
+app.use(require('./controllers'));
 
 app.get('/', (req, res) => {
   res.send('<h1>Hi there</h1>');

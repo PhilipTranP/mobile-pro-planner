@@ -18,7 +18,7 @@ router.put(
         msg: 'A phone number is required'
       });
     }
-    if(!checkPermissions(req.user, 1)) return lowPermissions();
+    if(!checkPermissions(req.user, 1)) return lowPermissions(res);
     const number = {
       phoneType: type || 'Unknown',
       phonenumber: phone
@@ -40,7 +40,7 @@ router.delete(
   '/:cx/phone/:phone',
   passport.authenticate('jwt', {session: false}),
   (req, res) => {
-    if(!checkPermissions(req.user, 2)) return lowPermissions();
+    if(!checkPermissions(req.user, 2)) return lowPermissions(res);
     Customer.deletePhone(req.params.cx, req.params.phone)
       .then(customer =>
         res.json({
@@ -58,7 +58,7 @@ router.put(
   ':cx/phone/:phone',
   passport.authenticate('jwt', {session: false}),
   (req, res) => {
-    if(!checkPermissions(req.user, 1)) return lowPermissions();
+    if(!checkPermissions(req.user, 1)) return lowPermissions(res);
     const { phone } = req.body;
     if(!phone.number) return res.json({
       success: false,
