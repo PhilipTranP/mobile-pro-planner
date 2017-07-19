@@ -54,7 +54,7 @@ app.use((req, res, next) => {
 // If serving without apache inverse commented app.use()
 // Import routers
 app.use(require('./controllers'));
-// app.use('/api', require('./'));
+// app.use('/api', require('./controllers'));
 
 
 app.get('/', (req, res) => {

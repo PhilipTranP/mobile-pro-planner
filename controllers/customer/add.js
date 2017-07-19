@@ -1,5 +1,6 @@
 const express = require('express');
 const { Customer } = require('../../models');
+const { checkPermissions, lowPermissions } = require('../access-control');
 
 const router = express.Router();
 

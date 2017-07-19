@@ -39,3 +39,15 @@ module.exports.deleteEmployee = (user, id) => {
       .catch(e => console.log(e));
   });
 }
+
+module.exports.addAddress = (id, address) => {
+  return new Promise((resolve, reject) => {
+    Employee.findById(id)
+      .then(employee => {
+        employee.address = address;
+        employee.save();
+        return employee
+      })
+      .then(resolve)
+  });
+}

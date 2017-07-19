@@ -8,7 +8,7 @@ module.exports = passport => {
     secretOrKey: require('./secret')
   };
   passport.use(new JwtStrategy(opts, (jwtPayload, done) => {
-    User.findById(jwtPayload._doc._id)
+    User.findOne({_id:jwtPayload._doc._id}).populate('employee')
       .then(user => {
         if(user) {
           return done(null, user);
