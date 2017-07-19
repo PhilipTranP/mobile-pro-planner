@@ -21,6 +21,9 @@ const hotelStay = new Schema({
     type: Date,
     required: true
   }
+},
+{
+  timestamps: true
 });
 
 const HotelStay = module.exports = mongoose.model('HotelStay', hotelStay);

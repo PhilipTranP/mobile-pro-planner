@@ -10,36 +10,52 @@ const secret = require('../../config/secret')
 // New User Registration
 router.post('/register', (req, res) => {
   let invite;
-  let newUser;
+  let doc;
+  const { username, password, code } = req.body;
+  if(!(username && password && code)) return res.json({
+    success: false,
+    msg: 'All fields required'
+  });
   // Check unique username
-  return User.byUsername(req.body.username)
+  return User.byUsername(username.toLowerCase())
     .then(user => {
+      console.log('user');
       if(user) throw new Error('username taken');
     })
     .then(() =>
       // Find invite
-      Invite.getInvite(req.body.code)
+      Invite.getInvite(code)
     )
     .then(invite => {
       // Verify invite
       if(!invite) throw new Error('Invalid invite code');
-      let user = new User({
-        employee: invite.employee._id,
+      return new User({
+        employee: invite.employee,
         permissions: invite.permissions,
-        username: req.body.username.toLowerCase(),
-        passhash: req.body.password
+        username: username.toLowerCase(),
+        passhash: password
       });
-      // Destroy invite
-      invite.remove();
-      return user
     })
     .then(user => {
       User.register(user);
+      doc = user;
+      Invite.use(code);
+      return user;
     })
-    .then(() =>
+    .then(user =>
+      jwt.sign(user, secret, {
+        expiresIn: 2419200  // 28 days
+      })
+    )
+    .then(token =>
       res.json({
         success: true,
-        msg: 'User registered'
+        token: `JWT ${token}`,
+        user: {
+          name: doc.employee.name,
+          permissions: doc.permissions,
+          phone: doc.employee.phonenumber
+        }
       })
     )
     .catch((err) =>

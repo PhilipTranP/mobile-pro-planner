@@ -23,6 +23,9 @@ const user = new Schema({
     type: Number,
     required: true
   }
+},
+{
+  timestamps: true
 });
 
 const User = mongoose.model('User', user);

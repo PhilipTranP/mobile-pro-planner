@@ -24,6 +24,9 @@ const appointment = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Employee'
   }]
+},
+{
+  timestamps: true
 });
 
 const Appointment = module.exports = mongoose.model('Appointment', appointment);

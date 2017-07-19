@@ -19,6 +19,9 @@ const invite = new Schema({
     ref: 'Employee',
     required: true
   }
+},
+{
+  timestamps: true
 });
 
 const Invite = module.exports = mongoose.model('Invite', invite);
@@ -42,4 +45,10 @@ module.exports.make = (employee, permissions) => {
   });
   invite.save();
   return invite.code;
+}
+
+module.exports.use = (code) => {
+  return new Promise((resolve, reject) => {
+    Invite.findOne({code:code}).remove().then(resolve)
+  });
 }

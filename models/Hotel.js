@@ -15,6 +15,9 @@ const hotel = new Schema({
     required: true
   },
   phonenumber: Phonenumber
+},
+{
+  timestamps: true
 });
 
 const Hotel = module.exports = mongoose.model('Hotel', hotel);

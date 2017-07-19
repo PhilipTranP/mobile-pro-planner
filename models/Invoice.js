@@ -24,6 +24,9 @@ const invoice = new Schema({
     required: true
   },
   items: [LineItem],
+},
+{
+  timestamps: true
 });
 
 invoice.virtual('total').get(() => {

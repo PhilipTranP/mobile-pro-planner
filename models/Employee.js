@@ -15,6 +15,9 @@ const employee = new Schema({
   },
   phonenumber: [Phonenumber],
   address: Address
+},
+{
+  timestamps: true
 });
 
 const Employee = module.exports = mongoose.model('Employee', employee);
