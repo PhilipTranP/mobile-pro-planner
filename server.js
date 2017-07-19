@@ -1,5 +1,4 @@
 const express = require('express');
-const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const passport = require('passport');
@@ -26,7 +25,7 @@ db.once('open', () => {
           if(!invite) throw new Error('no invite');
         })
         .catch(e => {
-          const newInvite = require('./make-super-user.js')()
+          const newInvite = require('./config/make-super-user.js')()
           console.log(`New Superuser Invite code: ${newInvite}`);
         })
     })
@@ -35,7 +34,7 @@ db.once('open', () => {
 // Instantiate app
 const app = express();
 
-// Serve frontend
+// Uncomment next line to serve frontend without apache
 // app.use(express.static('./frontend/build'));
 
 // Parse JSON
@@ -52,8 +51,11 @@ app.use((req, res, next) => {
   next();
 });
 
+// If serving without apache inverse commented app.use()
 // Import routers
 app.use(require('./controllers'));
+// app.use('/api', require('./'));
+
 
 app.get('/', (req, res) => {
   res.send('<h1>Hi there</h1>');
