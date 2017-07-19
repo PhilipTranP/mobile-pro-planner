@@ -1,5 +1,4 @@
-const Employee = require('./models/Employee.js');
-const Invite = require('./models/Invite.js');
+const { Employee, Invite } = require('./models');
 
 const owner = {
   name: 'James Martin'

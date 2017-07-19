@@ -1,20 +1,16 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const Address = require('./embeds/Address.js');
-const Comment = require('./embeds/Comment.js')
+const { Address, Comment } = require('./embeds');
 
 mongoose.Promise = global.Promise
 
 const appointment = new Schema({
   customer: {
     type: Schema.Types.ObjectId,
-    ref: 'Customer'
+    ref: 'Customer',
     required: true
   },
-  address: [{
-    type: Address,
-    required: true
-  }],
+  address: [Address],
   comments: [Comment],
   date: {
     type: Date,

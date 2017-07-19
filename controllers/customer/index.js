@@ -1,6 +1,6 @@
 const express = require('express');
 const passport = require('passport');
-const Customer = require('../../models/Customer');
+const { Customer } = require('../../models');
 const { checkPermissions, lowPermissions } = require('../access-control');
 
 const router = express.Router();

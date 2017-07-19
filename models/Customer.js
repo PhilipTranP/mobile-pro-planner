@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const address = require('./embeds/Address')
-const phonenumber = require('./embeds/Phonenumber');
-const comment = require('./embeds/Comment');
+const { Address, Comment, Phonenumber } = require('./embeds');
 
 mongoose.Promise = global.Promise
 
@@ -11,9 +9,9 @@ const customer = new Schema({
     type: String,
     required: true
   },
-  address: [address],
-  phonenumber: [phonenumber],
-  comments: [comment],
+  address: [Address],
+  phonenumber: [Phonenumber],
+  comments: [Comment],
   invoices: [{
     type: Schema.Types.ObjectId,
     ref: 'Invoice'

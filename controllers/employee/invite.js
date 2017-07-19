@@ -1,6 +1,5 @@
 const express = require('express');
-const Employee = require('../../models/Employee');
-const Invite = require('../../models/Invite');
+const { Employee, Invite } = require('../../models');
 const passport = require('passport');
 const { checkPermissions, lowPermissions } = require('../access-control')
 

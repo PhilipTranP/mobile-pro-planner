@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const Phonenumber = require('./embeds/Phonenumber');
-const Address = require('./embeds/Address');
-const User = require('./User')
+const { Address, Phonenumber, User } = require('./embeds');
 
 
 mongoose.Promise = global.Promise

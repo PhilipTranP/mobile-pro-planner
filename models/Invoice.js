@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const LineItem = require('./embeds/LineItem.js');
-const Address = require('./embeds/Address.js')
+const { Address, LineItem } = require('./embeds');
 
 mongoose.Promise = global.Promise
 
@@ -18,7 +17,7 @@ const invoice = new Schema({
   address: {
     type: Address,
     required: true
-  }
+  },
   date: {
     type: Date,
     required: true
