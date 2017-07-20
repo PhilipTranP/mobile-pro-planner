@@ -40,7 +40,7 @@ module.exports.deleteEmployee = (user, id) => {
   });
 }
 
-module.exports.addAddress = (id, address) => {
+module.exports.updateAddress = (id, address) => {
   return new Promise((resolve, reject) => {
     Employee.findById(id)
       .then(employee => {
@@ -48,6 +48,41 @@ module.exports.addAddress = (id, address) => {
         employee.save();
         return employee
       })
-      .then(resolve)
+      .then(resolve);
+  });
+}
+
+module.exports.addPhonenumber = (id, phone) => {
+  return new Promise((resolve, reject) => {
+    Employee.findById(id)
+      .then(employee => {
+        employee.phonenumber.push(phone);
+        employee.save();
+        return employee;
+      })
+      .then(resolve);
+  });
+}
+
+module.exports.changePhonenumber = (id, phone) => {
+  return new Promise((resolve, reject) => {
+    Employee.findById(id)
+      .then(employee => {
+        employee.phonenumber
+          .filter(record => record._id !== phone._id)
+          .push(phone);
+          employee.save();
+          return employee
+      })
+      .then(resolve);
+  });
+}
+
+module.exports.deletePhone = (id, phoneId) => {
+  return new Promise((resolve, reject) => {
+    Employee.findByIdAndUpdate(id,
+      { $pull: { phonenumber: { _id:phoneId } } },
+      {new: true})
+        .then(resolve);
   });
 }

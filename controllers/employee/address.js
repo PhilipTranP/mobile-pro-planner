@@ -5,6 +5,7 @@ const { checkPermissions, lowPermissions } = require('../access-control');
 
 const router = express.Router();
 
+// Add/edit employee address
 router.put('/:employeeId/address', (req, res) => {
   const { address } = req.body;
   const { user } = req;
@@ -15,7 +16,7 @@ router.put('/:employeeId/address', (req, res) => {
   });
   if(!checkPermissions(user, 2) && user.employee._id !== employeeId)
     return lowPermissions();
-  Employee.addAddress(employeeId, address)
+  Employee.updateAddress(employeeId, address)
     .then(employee => res.json(employee));
 });
 
