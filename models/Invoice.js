@@ -52,3 +52,23 @@ module.exports.addInvoice = (invoice) => {
       .then(() => resolve(cx))
   });
 }
+
+module.exports.delete = (id) => {
+  let invoice, customer;
+  return new Promise((resolve, reject) => {
+    Invoice.findById(id)
+      .then(inv => {
+        if(!inv) reject('no invoice');
+        invoice = inv;
+        return Customer.findByIdAndUpdate(inv.customer,
+              { $pull: { invoices: id } },
+              {new:true});
+      })
+      .then(cx => {
+        customer = cx;
+        invoice.remove();
+      })
+      .then(() => resolve(customer))
+      .catch(reject)
+  });
+}
