@@ -150,3 +150,11 @@ module.exports.deleteComment = (id, commentId, user) => {
       .then(cx => resolve(cx));
   });
 }
+
+module.exports.addInvoice = (id, invoice) => {
+  Customer.findById(id)
+    .then(customer => {
+      customer.invoices.push(invoice);
+      return customer.save();
+    })
+}
