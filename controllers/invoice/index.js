@@ -13,10 +13,7 @@ router.put('/', (req, res) => {
   if(!(invoice.customer && invoice.kind && invoice.address && invoice.date))
     return res.json({msg:'All fields required'});
   const newInvoice = new Invoice(invoice);
-  newInvoice.save();
-  console.log(newInvoice);
-  Customer.addInvoice(newInvoice.customer, newInvoice);
-  Customer.findById(newInvoice.customer)
+  Invoice.addInvoice(newInvoice)
     .then(cx =>
       res.json({
         invoice: newInvoice,

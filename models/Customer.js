@@ -142,7 +142,6 @@ module.exports.deleteComment = (id, commentId, user) => {
         return customer.comments.id(commentId);
       })
       .then(comment => {
-        console.log(comment);
         if(comment.employee !== user && user.permissions < 2) reject('unauthorized');
         cx.comments.pull({_id:commentId})
         return cx.save();
@@ -151,8 +150,8 @@ module.exports.deleteComment = (id, commentId, user) => {
   });
 }
 
-module.exports.addInvoice = (id, invoice) => {
-  Customer.findById(id)
+module.exports.addInvoice = (invoice) => {
+  Customer.findById(invoice.customer)
     .then(customer => {
       customer.invoices.push(invoice);
       return customer.save();
