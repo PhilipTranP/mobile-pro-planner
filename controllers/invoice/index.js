@@ -35,5 +35,6 @@ router.delete('/:id', (req, res) => {
 });
 
 router.use(require('./lineitem'));
+router.use(require('./comment'));
 
 module.exports = router;

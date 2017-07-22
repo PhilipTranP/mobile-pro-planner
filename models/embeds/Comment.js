@@ -4,7 +4,7 @@ const model = mongoose.model;
 
 mongoose.Promise = global.Promise
 
-const comment = module.exports = new Schema({
+let comment = module.exports = new Schema({
   body: {
     type: String,
     required: true
@@ -14,4 +14,10 @@ const comment = module.exports = new Schema({
     ref: 'Employee',
     required: true
   }
+});
+
+comment.path('body').set(comment => {
+  comment = comment.replace(/\d{4}[\s-]?\d{4}[\s-]?\d{4}[\s-]?\d{4}/g, '{Credit card REDACTED}');
+  comment = comment.replace(/\d{4}[\s-]?\d{6}[\s-]?\d{5}/g, '{Credit card REDACTED}');
+  return comment;
 });

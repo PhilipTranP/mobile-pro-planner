@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const { Address, LineItem } = require('./embeds');
+const { Address, LineItem, Comment } = require('./embeds');
 const Customer = require('./Customer')
 
 mongoose.Promise = global.Promise
@@ -24,6 +24,7 @@ const invoice = new Schema({
     required: true
   },
   items: [LineItem],
+  comments: [Comment]
 },
 {
   timestamps: true
@@ -112,5 +113,31 @@ module.exports.deleteItem = (id, itemId) => {
         resolve(invoice);
       })
       .catch(reject)
+  });
+}
+
+module.exports.addComment = (id, comment) => {
+  return new Promise((resolve, reject) => {
+    Invoice.findByIdAndUpdate(id,
+            { $push: { comments: comment } },
+            {new:true})
+      .then(invoice => {
+        if(!invoice) reject();
+        resolve(invoice);
+      })
+      .catch(reject);
+  });
+}
+
+module.exports.deleteComment = (id, commentId) => {
+  return new Promise((resolve, reject) => {
+    Invoice.findByIdAndUpdate(id,
+            { $pull: { comments: { _id: commentId } } },
+            {new:true})
+      .then(invoice => {
+        if(!invoice) reject();
+        resolve(invoice);
+      })
+      .catch(reject);
   });
 }
