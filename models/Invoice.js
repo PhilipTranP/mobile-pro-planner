@@ -72,3 +72,30 @@ module.exports.delete = (id) => {
       .catch(reject)
   });
 }
+
+module.exports.addItem = (id, item) => {
+  return new Promise((resolve, reject) => {
+    Invoice.findByIdAndUpdate(id,
+            { $push: { items: item } },
+            {new:true})
+      .then(resolve)
+      .catch(reject);
+  });
+}
+
+module.exports.editItem = (id, item) => {
+  let invoice;
+  return new Promise((resolve, reject) => {
+    Invoice.findById(id)
+      .then(inv => {
+        invoice = inv;
+        return invoice.items.id(item._id)
+      })
+      .then(record => {
+        record.description = item.description;
+        record.price = item.price;
+        return invoice.save();
+      })
+      .then(() => resolve(invoice))
+  });
+}

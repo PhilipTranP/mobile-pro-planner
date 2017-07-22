@@ -34,4 +34,6 @@ router.delete('/:id', (req, res) => {
     .catch(e => res.status(400).send());
 });
 
+router.use(require('./lineitem'));
+
 module.exports = router;

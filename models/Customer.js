@@ -151,9 +151,13 @@ module.exports.deleteComment = (id, commentId, user) => {
 }
 
 module.exports.addInvoice = (invoice) => {
-  Customer.findById(invoice.customer)
-    .then(customer => {
-      customer.invoices.push(invoice);
-      return customer.save();
-    })
+  return new Promise((resolve, reject) => {
+    Customer.findById(invoice.customer)
+      .then(customer => {
+        customer.invoices.push(invoice);
+        return customer.save();
+      })
+      .then(resolve)
+      .catch(reject);
+  })
 }
