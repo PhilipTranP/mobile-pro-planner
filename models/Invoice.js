@@ -88,14 +88,29 @@ module.exports.editItem = (id, item) => {
   return new Promise((resolve, reject) => {
     Invoice.findById(id)
       .then(inv => {
+        if(!inv) reject();
         invoice = inv;
         return invoice.items.id(item._id)
       })
       .then(record => {
+        if(!record) reject();
         record.description = item.description;
         record.price = item.price;
         return invoice.save();
       })
       .then(() => resolve(invoice))
+  });
+}
+
+module.exports.deleteItem = (id, itemId) => {
+  return new Promise((resolve, reject) => {
+    Invoice.findByIdAndUpdate(id,
+            { $pull: { items: { _id: itemId } } },
+            {new:true})
+      .then(invoice => {
+        if(!invoice) reject();
+        resolve(invoice);
+      })
+      .catch(reject)
   });
 }
