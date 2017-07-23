@@ -8,6 +8,7 @@ router.put('/:id/comment', (req, res) => {
   const { body } = req.body;
   const { id } = req.params;
   const { user } = req;
+  // Check user permissions
   if(!checkPermissions(user, 1)) return lowPermissions(res);
   if(!body) return res.status(400).send();
   const comment = {
@@ -24,6 +25,7 @@ router.put('/:id/comment', (req, res) => {
 router.delete('/:id/comment/:commentId', (req, res) => {
   const { id, commentId } = req.params;
   const { user } = req;
+  // Check user permissions
   if(!checkPermissions(user, 2)) return lowPermissions(res);
   Invoice.deleteComment(id, commentId)
     .then(invoice =>

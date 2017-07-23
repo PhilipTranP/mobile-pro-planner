@@ -35,7 +35,7 @@ db.once('open', () => {
 const app = express();
 
 // Uncomment next line to serve frontend without apache
-// app.use(express.static('./frontend/build'));
+// app.use(express.static('./view/build'));
 
 // Parse JSON
 app.use(bodyParser.json());
@@ -67,6 +67,6 @@ app.listen(5000, () => {
   const minutes = timestamp.getMinutes() > 9 ? timestamp.getMinutes() : `0${timestamp.getMinutes()}`
   const seconds = timestamp.getSeconds() > 9 ? timestamp.getSeconds() : `0${timestamp.getSeconds()}`
   console.log(`
-Server started at ${timestamp.getHours()}:${minutes}:${seconds}`);
+Server started at ${timestamp.getHours()}:${minutes}:${seconds}z`);
   console.log('Listning on http://localhost:5000');
 });

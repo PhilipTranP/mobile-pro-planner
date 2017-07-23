@@ -8,6 +8,7 @@ const router = express.Router();
 router.put('/:id/item', (req, res) => {
   const { id } = req.params;
   const { lineItem } = req.body;
+  // Check user permissions
   if(!checkPermissions(req.user, 1)) return lowPermissions(res);
   if(!(lineItem && lineItem.description && lineItem.price))
     return res.status(400).send();
@@ -20,6 +21,7 @@ router.put('/:id/item', (req, res) => {
 router.put('/:id/item/:itemId', (req, res) => {
   const { id, itemId } = req.params;
   const { lineItem } = req.body;
+  // Check user permissions
   if(!checkPermissions(req.user, 2)) return lowPermissions(res);
   if(!(lineItem && lineItem.description && lineItem.price))
     return res.status(400).send();
@@ -30,6 +32,7 @@ router.put('/:id/item/:itemId', (req, res) => {
 
 router.delete('/:id/item/:itemId', (req, res) => {
   const { id, itemId } = req.params;
+  // Check user permissions
   if(!checkPermissions(req.user, 2)) return lowPermissions(res);
   Invoice.deleteItem(id, itemId)
     .then(invoice => res.json(invoice))

@@ -36,21 +36,37 @@ invoice.virtual('total').get(() => {
   return total;
 });
 
+invoice.set('toJSON', {virtuals:true});
+
 const Invoice = module.exports = mongoose.model('Invoice', invoice);
 
 module.exports.addInvoice = (invoice) => {
   return new Promise((resolve, reject) => {
-    let cx;
-    Customer.findById(invoice.customer)
+    Customer.findByIdAndUpdate(invoice.customer,
+            { $push: { invoices: invoice } },
+            {new:true})
       .then(customer => {
-        if(!customer) reject('no cx');
-        cx = customer;
-        return invoice.save();
+        if(!customer) reject();
+        invoice.save();
+        resolve(customer);
       })
-      .then(() =>
-        Customer.addInvoice(invoice)
-      )
-      .then(() => resolve(cx))
+  });
+}
+
+module.exports.editInvoice = (id, invoice) => {
+  return new Promise((resolve, reject) => {
+    Invoice.findById(id)
+      .then(inv => {
+        if(!inv) reject();
+        // Conditionals to allow partial updates
+        if(invoice.customer) inv.customer = invoice.customer;
+        if(invoice.address) inv.address = invoice.address;
+        if(invoice.date)inv.date = invoice.date;
+        if(invoice.kind) inv.kind = invoice.kind;
+        inv.save();
+        resolve(inv);
+      })
+      .catch(reject);
   });
 }
 

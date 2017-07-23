@@ -154,10 +154,11 @@ module.exports.addInvoice = (invoice) => {
   return new Promise((resolve, reject) => {
     Customer.findById(invoice.customer)
       .then(customer => {
-        customer.invoices.push(invoice);
-        return customer.save();
+        if(!customer) reject('no cx');
+        customer.invoices.push(invoice._id);
+        customer.save();
+        resolve(customer);
       })
-      .then(resolve)
       .catch(reject);
   })
 }
