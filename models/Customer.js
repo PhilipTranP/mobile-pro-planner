@@ -38,7 +38,7 @@ module.exports.addPhone = (id, phone) => {
   return new Promise((resolve, reject) => {
     Customer.findById(id)
       .then(customer => {
-        if(!customer) reject('no cx');
+        if(!customer) return reject('no cx');
         customer.phonenumber.push(phone);
         customer.save();
         resolve(customer);
@@ -150,7 +150,7 @@ module.exports.deleteComment = (id, commentId, user) => {
   });
 }
 
-module.exports.addInvoice = (invoice) => {
+module.exports.addInvoice = invoice => {
   return new Promise((resolve, reject) => {
     Customer.findById(invoice.customer)
       .then(customer => {
@@ -161,4 +161,17 @@ module.exports.addInvoice = (invoice) => {
       })
       .catch(reject);
   })
+}
+
+module.exports.addAppointment = appointment => {
+  return new Promise((resolve, reject) => {
+    Customer.findByIdAndUpdate(appointment.customer,
+            { $push: { appointments: appointment } },
+            {new:true})
+      .then(customer => {
+        if(!customer) throw validationError;
+        resolve(customer);
+      })
+      .catch(reject)
+  });
 }

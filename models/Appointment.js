@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const { Address, Comment } = require('./embeds');
+const Customer = require('./Customer');
+const Employee = require('./Employee')
 
 mongoose.Promise = global.Promise
 
@@ -10,7 +12,7 @@ const appointment = new Schema({
     ref: 'Customer',
     required: true
   },
-  address: [Address],
+  address: Address,
   comments: [Comment],
   date: {
     type: Date,
@@ -26,3 +28,46 @@ const appointment = new Schema({
 });
 
 const Appointment = module.exports = mongoose.model('Appointment', appointment);
+
+module.exports.add = appointment => {
+  return new Promise((resolve, reject) => {
+    const newApt = new Appointment(appointment)
+    Customer.addAppointment(newApt)
+      .then(customer => {
+        newApt.save();
+        const out = {
+          cx: customer,
+          appointment: newApt
+        }
+        resolve(out);
+      })
+      .catch(reject);
+  });
+}
+
+module.exports.deleteAppointment = id => {
+  return new Promise((resolve, reject) => {
+    console.log('delete called');
+    Appointment.findById(id)
+      .then(appointment => {
+        if(!appointment) throw validationError;
+        console.log('appt found');
+        Customer.update(
+          { _id: appointment.customer },
+          { $pull: { appointments: appointment._id } }
+        ).exec()
+        .then(() => console.log('cx updated'));
+        if(appointment.employees.length) {
+          appointment.employees.forEach(employeeId => {
+            Employee.update(
+              { _id: employeeId },
+              { $pull: { appointments: appointment._id } }
+            );
+          });
+        }
+        appointment.remove();
+        resolve();
+      })
+      .catch(reject)
+  });
+}

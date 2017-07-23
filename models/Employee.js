@@ -12,6 +12,10 @@ const employee = new Schema({
     ref: 'User'
   },
   phonenumber: [Phonenumber],
+  appointments: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Appointment'
+  }],
   address: Address
 },
 {
