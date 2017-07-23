@@ -6,49 +6,25 @@ const { checkPermissions, lowPermissions } = require('../access-control');
 const router = express.Router();
 
 // Add/delete comments
-router.put(
-  '/:cx/comment',
-  passport.authenticate('jwt', {session: false}),
-  (req, res) => {
-    const { comment } = req.body;
-    if(!comment) return res.json({
-      success: false,
-      msg: 'Comments are made out of words. Use some.'
-    });
-    const newComment = {
-      body: comment,
-      employee: req.user
-    };
-    Customer.addComment(req.params.cx, newComment)
-      .then(customer =>
-        res.json({
-          success: true,
-          customer: customer
-        })
-      )
-      .catch(e =>
-        res.status(404).send('Not Found')
-      );
-  }
-);
+router.put('/:cx/comment', (req, res) => {
+  if(!checkPermissions(req.user, 1)) return lowPermissions(res);
+  const { comment } = req.body;
+  if(!comment) return res.status(400).send();
+  const newComment = {
+    body: comment,
+    employee: req.user
+  };
+  Customer.addComment(req.params.cx, newComment)
+    .then(customer => res.json(customer))
+    .catch(e => res.status(404).send('Not Found'));
+});
 
-router.delete(
-  '/:cx/comment/:comment',
-  passport.authenticate('jwt', {session: false}),
-  (req, res) => {
-    const { cx, comment } = req.params;
-    Customer.deleteComment(cx, comment, req.user)
-      .then(customer =>
-        res.json({
-          success: true,
-          customer: customer
-        })
-      )
-      .catch(e => {
-        if(e == 'no cx') return res.status(404).send('Not Found');
-        return res.status(401).send(e)
-      });
-  }
-);
+router.delete('/:cx/comment/:comment', (req, res) => {
+  if(!checkPermissions(req.user, 2)) return lowPermissions(res);
+  const { cx, comment } = req.params;
+  Customer.deleteComment(cx, comment)
+    .then(customer => res.json(cusomer))
+    .catch(e => res.status(404).send());
+});
 
 module.exports = router;

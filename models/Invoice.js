@@ -46,10 +46,11 @@ module.exports.addInvoice = (invoice) => {
             { $push: { invoices: invoice } },
             {new:true})
       .then(customer => {
-        if(!customer) reject();
+        if(!customer) throw validationError;
         invoice.save();
         resolve(customer);
       })
+      .catch(reject);
   });
 }
 
@@ -57,7 +58,7 @@ module.exports.editInvoice = (id, invoice) => {
   return new Promise((resolve, reject) => {
     Invoice.findById(id)
       .then(inv => {
-        if(!inv) reject();
+        if(!inv) throw validationError;
         // Conditionals to allow partial updates
         if(invoice.customer) inv.customer = invoice.customer;
         if(invoice.address) inv.address = invoice.address;
@@ -75,7 +76,7 @@ module.exports.delete = (id) => {
   return new Promise((resolve, reject) => {
     Invoice.findById(id)
       .then(inv => {
-        if(!inv) reject('no invoice');
+        if(!inv) throw validationError;
         invoice = inv;
         return Customer.findByIdAndUpdate(inv.customer,
               { $pull: { invoices: id } },
@@ -105,7 +106,7 @@ module.exports.editItem = (id, item) => {
   return new Promise((resolve, reject) => {
     Invoice.findById(id)
       .then(inv => {
-        if(!inv) reject();
+        if(!inv) throw validationError;
         invoice = inv;
         return invoice.items.id(item._id)
       })
@@ -116,6 +117,7 @@ module.exports.editItem = (id, item) => {
         return invoice.save();
       })
       .then(() => resolve(invoice))
+      .catch(reject);
   });
 }
 
@@ -125,10 +127,10 @@ module.exports.deleteItem = (id, itemId) => {
             { $pull: { items: { _id: itemId } } },
             {new:true})
       .then(invoice => {
-        if(!invoice) reject();
+        if(!invoice) throw validationError;
         resolve(invoice);
       })
-      .catch(reject)
+      .catch(reject);
   });
 }
 
@@ -138,7 +140,7 @@ module.exports.addComment = (id, comment) => {
             { $push: { comments: comment } },
             {new:true})
       .then(invoice => {
-        if(!invoice) reject();
+        if(!invoice) throw validationError;
         resolve(invoice);
       })
       .catch(reject);
@@ -151,7 +153,7 @@ module.exports.deleteComment = (id, commentId) => {
             { $pull: { comments: { _id: commentId } } },
             {new:true})
       .then(invoice => {
-        if(!invoice) reject();
+        if(!invoice) throw validationError;
         resolve(invoice);
       })
       .catch(reject);

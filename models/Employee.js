@@ -29,18 +29,16 @@ module.exports.getAll = () => {
 }
 
 module.exports.deleteEmployee = (user, id) => {
-  let emp;
   return new Promise((resolve, reject) => {
     Employee.findById(id).populate('user')
       .then(employee => {
-        if(!employee) reject('no emp');
-        emp = employee;
+        if(!employee) throw validationError;
         if(employee.user && employee.user.permissions >= user.permissions && user.permissions !== 3) reject('lowPermissions');
         if(employee.user) User.remove({_id: employee.user._id});
         return Employee.remove({_id: id})
       })
       .then(resolve)
-      .catch(e => console.log(e));
+      .catch(reject);
   });
 }
 
@@ -48,45 +46,60 @@ module.exports.updateAddress = (id, address) => {
   return new Promise((resolve, reject) => {
     Employee.findById(id)
       .then(employee => {
+        if(!employee) throw validationError;
         employee.address = address;
         employee.save();
         return employee
       })
-      .then(resolve);
+      .then(resolve)
+      .catch(reject);
   });
 }
 
 module.exports.addPhonenumber = (id, phone) => {
   return new Promise((resolve, reject) => {
-    Employee.findById(id)
+    Employee.findByIdAndUpdate(id,
+            { $push: { phonenumber: phone } },
+            {new:true})
       .then(employee => {
-        employee.phonenumber.push(phone);
-        employee.save();
+        if(!employee) throw validationError;
         return employee;
       })
-      .then(resolve);
+      .then(resolve)
+      .catch(reject);
   });
 }
 
 module.exports.changePhonenumber = (id, phone) => {
   return new Promise((resolve, reject) => {
+    let emp;
     Employee.findById(id)
       .then(employee => {
-        employee.phonenumber
-          .filter(record => record._id !== phone._id)
-          .push(phone);
-          employee.save();
-          return employee
+        if(!employee) throw validationError;
+        emp = employee;
+        return employee.phonenumber.id(phone._id)
       })
-      .then(resolve);
+      .then(phonenumber => {
+        if(!phonenumber) throw validationError;
+        phonenumber.phoneType = phone.phoneType;
+        phonenumber.phonenumber = phone.phonenumber;
+        return emp.save();
+      })
+      .then(resolve)
+      .catch(reject);
   });
 }
 
 module.exports.deletePhone = (id, phoneId) => {
   return new Promise((resolve, reject) => {
     Employee.findByIdAndUpdate(id,
-      { $pull: { phonenumber: { _id:phoneId } } },
-      {new: true})
-        .then(resolve);
+            { $pull: { phonenumber: { _id:phoneId } } },
+            {new: true})
+      .then(employee => {
+        if(!employee) throw validationError;
+        return employee;
+      })
+      .then(resolve)
+      .catch(reject);
   });
 }

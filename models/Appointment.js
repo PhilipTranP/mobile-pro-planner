@@ -35,28 +35,25 @@ module.exports.add = appointment => {
     Customer.addAppointment(newApt)
       .then(customer => {
         newApt.save();
-        const out = {
+        return {
           cx: customer,
           appointment: newApt
         }
-        resolve(out);
       })
+      .then(resolve)
       .catch(reject);
   });
 }
 
 module.exports.deleteAppointment = id => {
   return new Promise((resolve, reject) => {
-    console.log('delete called');
     Appointment.findById(id)
       .then(appointment => {
         if(!appointment) throw validationError;
-        console.log('appt found');
         Customer.update(
           { _id: appointment.customer },
           { $pull: { appointments: appointment._id } }
-        ).exec()
-        .then(() => console.log('cx updated'));
+        )
         if(appointment.employees.length) {
           appointment.employees.forEach(employeeId => {
             Employee.update(
