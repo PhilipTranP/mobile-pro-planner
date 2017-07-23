@@ -96,3 +96,17 @@ module.exports.deleteEmployees = (id, employees) => {
       .catch(reject);
   });
 }
+
+module.exports.setAddress = (id, address) => {
+  return new Promise((resolve, reject) => {
+    Appointment.findByIdAndUpdate(id,
+                { $set: { address: address } },
+                {new:true})
+      .then(appointment => {
+        if(!appointment) throw validationError;
+        return appointment;
+      })
+      .then(resolve)
+      .catch(reject);
+  });
+}
