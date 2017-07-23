@@ -22,6 +22,22 @@ const hotel = new Schema({
 const Hotel = module.exports = mongoose.model('Hotel', hotel);
 
 module.exports.byName = name => {
-  const query = Hotel.findOne({name: name});
-  return query.exec();
+  return Hotel.findOne({name: name}).exec();
+}
+
+module.exports.getAll = () => {
+  return Hotel.find().exec();
+}
+
+module.exports.new = hotel => {
+  return new Promise((resolve, reject) => {
+    const newHotel = new Hotel(hotel);
+    newHotel.save()
+      .then(resolve)
+      .catch(reject);
+  });
+}
+
+module.exports.delete = id => {
+  return Hotel.findByIdAndRemove(id).exec();
 }
