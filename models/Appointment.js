@@ -68,3 +68,31 @@ module.exports.deleteAppointment = id => {
       .catch(reject)
   });
 }
+
+module.exports.addEmployees = (id, employees) => {
+  return new Promise((resolve, reject) => {
+    Appointment.findByIdAndUpdate(id,
+                { $pushAll: { employees: employees } },
+                {new:true})
+      .then(appointment => {
+        if(!appointment) throw validationError;
+        return appointment;
+      })
+      .then(resolve)
+      .catch(reject);
+  });
+}
+
+module.exports.deleteEmployees = (id, employees) => {
+  return new Promise((resolve, reject) => {
+    Appointment.findByIdAndUpdate(id,
+                { $pullAll: { employees: employees } },
+                {new:true})
+      .then(appointment => {
+        if(!appointment) throw validationError;
+        return appointment;
+      })
+      .then(resolve)
+      .catch(reject);
+  });
+}
