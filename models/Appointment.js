@@ -110,3 +110,31 @@ module.exports.setAddress = (id, address) => {
       .catch(reject);
   });
 }
+
+module.exports.addComment = (id, comment) => {
+  return new Promise((resolve, reject) => {
+    Appointment.findByIdAndUpdate(id,
+                { $push: { comments: comment } },
+                {new:true})
+      .then(appointment => {
+        if(!appointment) throw validationError;
+        return appointment;
+      })
+      .then(resolve)
+      .catch(reject);
+  });
+}
+
+module.exports.deleteComment = (id, commentId) => {
+  return new Promise((resolve, reject) => {
+    Appointment.findByIdAndUpdate(id,
+                { $pull: { comments: { _id: commentId } } },
+                {new:true})
+      .then(appointment => {
+        if(!appointment) throw validationError;
+        return appointment;
+      })
+      .then(resolve)
+      .catch(reject);
+  });
+}
