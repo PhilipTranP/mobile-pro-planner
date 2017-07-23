@@ -138,3 +138,17 @@ module.exports.deleteComment = (id, commentId) => {
       .catch(reject);
   });
 }
+
+module.exports.setDate = (id, date) => {
+  return new Promise((resolve, reject) => {
+    Appointment.findByIdAndUpdate(id,
+                { $set: { date: date } },
+                {new:true})
+      .then(appointment => {
+        if(!appointment) throw validationError;
+        return appointment;
+      })
+      .then(resolve)
+      .catch(reject);
+  });
+}

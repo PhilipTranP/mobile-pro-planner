@@ -30,5 +30,6 @@ router.delete('/:id', (req, res) => {
 router.use(require('./employees'));
 router.use(require('./address'));
 router.use(require('./comments'));
+router.use(require('./date'));
 
 module.exports = router;
