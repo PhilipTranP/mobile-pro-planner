@@ -29,4 +29,14 @@ router.delete('/:id', (req, res) => {
     .catch(e => res.status(404).send());
 });
 
+router.put('/:id', (req, res) => {
+  if(!checkPermissions(req.user, 2)) return lowPermissions(res);
+  const { id } = req.params;
+  const { hotel } = req.body;
+  if(!(hotel.name || hotel.address || hotel.phonenumber)) return res.status(400).send();
+  Hotel.edit(id, hotel)
+    .then(record => res.json(record))
+    .catch(e => res.status(404).send());
+});
+
 module.exports = router;

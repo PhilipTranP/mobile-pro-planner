@@ -41,3 +41,18 @@ module.exports.new = hotel => {
 module.exports.delete = id => {
   return Hotel.findByIdAndRemove(id).exec();
 }
+
+module.exports.edit = (id, hotel) => {
+  return new Promise((resolve, reject) => {
+    Hotel.findById(id)
+      .then(record => {
+        if(!record) throw validationError;
+        if(hotel.address) record.address = hotel.address;
+        if(hotel.name) record.name = hotel.name;
+        if(hotel.phonenumber) record.phonenumber = hotel.phonenumber;
+        return record.save();
+      })
+      .then(resolve)
+      .catch(reject);
+  });
+}
