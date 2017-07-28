@@ -24,4 +24,6 @@ router.delete('/:id', (req, res) => {
     .catch(() => res.status(404).send());
 });
 
+router.use(require('./employee'));
+
 module.exports = router;
