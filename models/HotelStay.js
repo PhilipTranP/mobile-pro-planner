@@ -50,6 +50,24 @@ module.exports.delete = id => {
   })
 }
 
+module.exports.edit = (id, hotelStay) => {
+  return new Promise((resolve, reject) => {
+    HotelStay.findById(id)
+      .then(stay => {
+        if(!stay) throw validationError;
+        return stay;
+      })
+      .then(stay => {
+        if(hotelStay.hotel) stay.hotel = hotelStay.hotel;
+        if(hotelStay.checkIn) stay.checkIn = hotelStay.checkIn;
+        if(hotelStay.checkOut) stay.checkOut = hotelStay.checkOut;
+        return stay.save();
+      })
+      .then(resolve)
+      .catch(reject);
+  });
+}
+
 module.exports.addEmployees = (id, employees) => {
   return new Promise((resolve, reject) => {
     HotelStay.findByIdAndUpdate(id,
