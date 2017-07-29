@@ -27,6 +27,20 @@ router.delete('/:id', (req, res) => {
     .catch(() => res.status(404).send());
 });
 
+router.get('/:id', (req, res) => {
+  if(!checkPermissions(req.user, 1)) return lowPermissions(res);
+  const { id } = req.params;
+  Appointment.findOne({_id:id})
+    .populate('customer')
+    .populate('employees')
+    .then(appointment => {
+      if(!appointment) throw validationError;
+      return appointment;
+    })
+    .then(appointment => res.json(appointment))
+    .catch(e => res.status(404).send());
+});
+
 router.use(require('./employees'));
 router.use(require('./address'));
 router.use(require('./comments'));

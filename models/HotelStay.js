@@ -95,3 +95,10 @@ module.exports.deleteEmployees = (id, employees) => {
       .catch(reject);
   });
 }
+
+module.exports.getMySchedule = (user, start, limit) => {
+  return HotelStay.find({
+    employees: { $in: [user.employee._id] },
+    date: { $gt: start, $lt: limit }
+  }).populate('hotel').exec();
+}

@@ -152,3 +152,10 @@ module.exports.setDate = (id, date) => {
       .catch(reject);
   });
 }
+
+module.exports.getMySchedule = (user, start, limit) => {
+  return Appointment.find({
+    employees: { $in: [user.employee._id] },
+    date: { $gt: start, $lt: limit }
+  }).populate('customer').exec();
+}
