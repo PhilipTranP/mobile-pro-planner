@@ -1,3 +1,6 @@
+/* eslint no-console: 0 */
+
+const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -7,7 +10,7 @@ const Invite = require('./models/Invite.js');
 
 // Connect to db
 mongoose.connect('mongodb://localhost:27017/mobilepro', {useMongoClient: true});
-db = mongoose.connection;
+let db = mongoose.connection;
 
 // Listen for errors
 // db.on('error', e => console.log(e));
@@ -19,17 +22,17 @@ db.once('open', () => {
       if(!user) throw new Error('no superuser');
       return {permissions: 3};
     })
-    .catch(e => {
+    .catch(() => {
       Invite.findOne({permissions: 3}).exec()
         .then(invite => {
           if(!invite) throw new Error('no invite');
         })
-        .catch(e => {
-          const newInvite = require('./config/make-super-user.js')()
+        .catch(() => {
+          const newInvite = require('./config/make-super-user.js')();
           console.log(`New Superuser Invite code: ${newInvite}`);
-        })
-    })
-})
+        });
+    });
+});
 
 // Instantiate app
 const app = express();
@@ -44,29 +47,45 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 require('./config/jwtconfig')(passport);
 
-// FOR DEVELOPMENT ONLY!
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*')
-  res.removeHeader('X-Powered-By')
+  res.header('Access-Control-Allow-Origin', '*');
+  res.removeHeader('X-Powered-By');
   next();
 });
 
-// If serving without apache inverse commented app.use()
-// Import routers
-app.use(require('./controllers'));
-// app.use('/api', require('./controllers'));
 
+app.use('/api', require('./controllers'));
 
-app.get('/', (req, res) => {
-  res.send('<h1>Hi there</h1>');
-});
+if(process.env.NODE_ENV === 'dev') {
+  const compiler = require('webpack')(require('./webpack.config.dev'));
+
+  app.use(require('webpack-dev-middleware')(compiler, {
+    noInfo: true,
+    publicPath: '/'
+  }));
+
+  app.use(require('webpack-hot-middleware')(compiler));
+  app.get('*', (req, res) => {
+    const index = path.join(compiler.outputPath, 'index.html');
+    compiler.outputFileSystem.readFile(index, (e, file) => {
+      res.set('Content-Type', 'text/html');
+      res.send(file);
+    });
+  });
+} else {
+  app.get('*', (req, res) => {
+    const index = path.join(__dirname, 'view', 'dist', 'index.html');
+    res.set('Content-Type', 'text/html');
+    res.sendFile(index);
+  });
+}
+
 
 // Start server
-app.listen(5000, () => {
+app.listen(process.env.PORT || 1337, () => {
   const timestamp = new Date();
-  const minutes = timestamp.getMinutes() > 9 ? timestamp.getMinutes() : `0${timestamp.getMinutes()}`
-  const seconds = timestamp.getSeconds() > 9 ? timestamp.getSeconds() : `0${timestamp.getSeconds()}`
-  console.log(`
-Server started at ${timestamp.getHours()}:${minutes}:${seconds}z`);
-  console.log('Listning on http://localhost:5000');
+  const minutes = timestamp.getMinutes() > 9 ? timestamp.getMinutes() : `0${timestamp.getMinutes()}`;
+  const seconds = timestamp.getSeconds() > 9 ? timestamp.getSeconds() : `0${timestamp.getSeconds()}`;
+  console.log(`Server started at ${timestamp.getHours()}:${minutes}:${seconds}z`);
+  console.log('Listning on http://localhost:1337');
 });
