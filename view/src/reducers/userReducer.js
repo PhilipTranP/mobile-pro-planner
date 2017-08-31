@@ -15,6 +15,13 @@ export default (state=user, action) => {
       };
     case types.USER_LOGIN_REJECTED:
       return {...state, fetching: false};
+    case types.USER_RESUME:
+      return {
+        ...state,
+        fetching: false,
+        isLoggedIn: true,
+        user: action.payload
+      };
     default:
       return state;
   }
