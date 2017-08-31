@@ -49,7 +49,6 @@ router.post('/register', (req, res) => {
     )
     .then(token =>
       res.json({
-        success: true,
         token: `JWT ${token}`,
         user: {
           name: doc.employee.name,
@@ -97,7 +96,6 @@ router.post('/login', (req, res) => {
     )
     .then(token =>
       res.json({
-        success: true,
         token: `JWT ${token}`,
         user: {
           name: doc.employee.name,
