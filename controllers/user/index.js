@@ -19,7 +19,6 @@ router.post('/register', (req, res) => {
   // Check unique username
   return User.byUsername(username.toLowerCase())
     .then(user => {
-      console.log('user');
       if(user) throw new Error('username taken');
     })
     .then(() =>

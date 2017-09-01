@@ -28,3 +28,19 @@ export const login = credentials => dispatch => {
       flashMessage('warning', 'Something went wrong while logging in. please try again.')(dispatch);
     });
 };
+
+export const register = userInfo => dispatch => {
+  if(!(userInfo.username && userInfo.password && userInfo.code))
+    return flashMessage('danger', 'All fields required!')(dispatch);
+  user.register(userInfo)
+    .then(data => {
+      if(!data.token) {
+        return flashMessage('danger', data.msg)(dispatch);
+      } else {
+        JWT.keep(data.token);
+        dispatch({type: types.USER_LOGIN_FULFILLED, payload: data.user});
+        flashMessage('success', 'You are now registered and logged in')(dispatch);
+      }
+    })
+    .catch(() => flashMessage('warning', 'Something went wrong while talking to the server')(dispatch));
+};
