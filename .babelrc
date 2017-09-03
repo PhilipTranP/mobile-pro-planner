@@ -9,7 +9,7 @@
   ],
   "env": {
     "development": {
-      "presets": ["react-hmre", "stage-1"],
+      "presets": ["stage-1"],
       "plugins": [
         "transform-class-properties",
         ["transform-runtime", {

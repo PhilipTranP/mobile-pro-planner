@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 import RouterOutput from './Routes';
-import Navbar from './common/Navbar';
+import Navbar from './common/navbar';
 import Alerts from './common/Alerts';
 import { checkForLogin } from '../actions/userActions';
 
@@ -12,8 +12,7 @@ import { checkForLogin } from '../actions/userActions';
 class App extends Component {
   static propTypes = {
     user: PropTypes.object,
-    checkForLogin: PropTypes.func.isRequired,
-    history: PropTypes.object.isRequired
+    checkForLogin: PropTypes.func.isRequired
   }
 
   componentDidMount() {
@@ -23,7 +22,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Navbar history={this.props.history} />
+        <Navbar />
         <Alerts />
         <RouterOutput />
       </div>

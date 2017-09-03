@@ -7,27 +7,25 @@ const path = require('path');
 module.exports = {
   devtool: 'inline-source-map',
   entry: [
-    'webpack-hot-middleware/client?reload=true',
-    path.resolve(__dirname, 'src/index')
+    path.resolve(__dirname, 'view/src/index')
   ],
   target: 'web',
   output: {
-    path: __dirname + '/dist',
+    path: __dirname + '/view/dist',
     publicPath: '/',
-    filename: 'readable.js'
+    filename: 'js/readable.js'
   },
   devServer: {
-    contentBase: path.resolve(__dirname, 'src'),
+    contentBase: path.resolve(__dirname, 'view/src'),
 
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
-    new HtmlWebpackPlugin({ template: 'src/index.html' })
+    new HtmlWebpackPlugin({ template: 'view/src/index.html' })
   ],
   module: {
     loaders: [
-      {test: /\.js$/, include: path.join(__dirname, 'src'), loaders: ['babel-loader']},
+      {test: /\.js$/, exclude: /node_modules/, loaders: ['babel-loader']},
       {test: /(\.css)$/, loaders: ['style-loader', 'css-loader']},
       {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader'},
       {test: /\.(woff|woff2)$/, loader: 'file-loader'},

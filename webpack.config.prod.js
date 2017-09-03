@@ -9,7 +9,7 @@ const GLOBALS = {
 
 module.exports = {
   devtool: 'none',
-  entry: path.resolve(__dirname, 'src/index'),
+  entry: path.resolve(__dirname, 'view/src/index'),
   target: 'web',
   output: {
     path: __dirname + '/dist',

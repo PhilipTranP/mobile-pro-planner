@@ -38,7 +38,7 @@ db.once('open', () => {
 const app = express();
 
 // Uncomment next line to serve frontend without apache
-// app.use(express.static('./view/build'));
+// app.use(express.static('./view/dist'));
 
 // Parse JSON
 app.use(bodyParser.json());
@@ -53,36 +53,11 @@ app.use((req, res, next) => {
   next();
 });
 
-
-app.use('/api', require('./controllers'));
-
-if(process.env.NODE_ENV === 'dev') {
-  const compiler = require('webpack')(require('./webpack.config.dev'));
-
-  app.use(require('webpack-dev-middleware')(compiler, {
-    noInfo: true,
-    publicPath: '/'
-  }));
-
-  app.use(require('webpack-hot-middleware')(compiler));
-  app.get('*', (req, res) => {
-    const index = path.join(compiler.outputPath, 'index.html');
-    compiler.outputFileSystem.readFile(index, (e, file) => {
-      res.set('Content-Type', 'text/html');
-      res.send(file);
-    });
-  });
-} else {
-  app.get('*', (req, res) => {
-    const index = path.join(__dirname, 'view', 'dist', 'index.html');
-    res.set('Content-Type', 'text/html');
-    res.sendFile(index);
-  });
-}
+app.use('/', require('./controllers'));
 
 
 // Start server
-app.listen(process.env.PORT || 1337, () => {
+app.listen(process.env.PORT || 5000, () => {
   const timestamp = new Date();
   const minutes = timestamp.getMinutes() > 9 ? timestamp.getMinutes() : `0${timestamp.getMinutes()}`;
   const seconds = timestamp.getSeconds() > 9 ? timestamp.getSeconds() : `0${timestamp.getSeconds()}`;

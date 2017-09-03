@@ -22,6 +22,18 @@ export default (state=user, action) => {
         isLoggedIn: true,
         user: action.payload
       };
+    case types.USER_REGISTER_PENDING:
+      return {...state, fetching: true};
+    case types.USER_REGISTER_FULFILLED:
+      return {
+        ...state,
+        fetching: false,
+        isLoggedIn: true,
+        user: action.payload
+      };
+    case types.USER_REGESTER_REJECTED:
+      return {...state, fetching: false};
+
     default:
       return state;
   }

@@ -5,9 +5,12 @@
   "main": "server.js",
   "scripts": {
     "start": "npm-run-all --parallel lint:watch serve",
-    "lint": "esw webpack.config.* view server.js --color",
+    "frontend:dev": "npm-run-all --parallel lint:watch build:watch",
+    "lint": "esw view/src --color",
     "lint:watch": "npm run lint -- --watch",
     "serve": "NODE_ENV=dev nodemon server.js --ignore 'src/'",
+    "build:dev": "webpack --config webpack.config.dev.js",
+    "build:watch": "npm run build:dev -- --watch",
     "build": "NODE_ENV=production webpack --config webpack.config.prod.js",
     "serve:prod": "NODE_ENV=production node ./server.js",
     "deployment": "npm-run-all build serve:prod"
@@ -27,7 +30,8 @@
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
     "mongoose": "^4.11.1",
-    "passport": "^0.4.0"
+    "passport": "^0.4.0",
+    "passport-jwt": "2.2.1"
   },
   "devDependencies": {
     "axios": "^0.16.2",
@@ -42,28 +46,27 @@
     "babel-preset-react-hmre": "^1.1.1",
     "babel-preset-stage-1": "^6.24.1",
     "babel-runtime": "^6.26.0",
-    "bootstrap": "4.0.0-beta",
+    "bootstrap": "3",
     "css-loader": "^0.28.5",
     "eslint": "^4.5.0",
     "eslint-plugin-class-property": "^1.0.6",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-react": "^7.3.0",
     "eslint-watch": "^3.1.2",
+    "file-loader": "^0.11.2",
     "html-webpack-plugin": "^2.30.1",
     "jwt-client": "^0.2.1",
     "npm-run-all": "^4.1.1",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
+    "react-bootstrap": "^0.31.2",
     "react-dom": "^15.6.1",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
     "react-transition-group": "1.1.2",
-    "reactstrap": "^4.8.0",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
     "style-loader": "^0.18.2",
-    "webpack": "^3.5.5",
-    "webpack-dev-middleware": "^1.12.0",
-    "webpack-hot-middleware": "^2.18.2"
+    "webpack": "^3.5.5"
   }
 }
