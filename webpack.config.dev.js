@@ -13,7 +13,7 @@ module.exports = {
   output: {
     path: __dirname + '/view/dist',
     publicPath: '/',
-    filename: 'js/readable.js'
+    filename: 'js/readable.[hash].js'
   },
   devServer: {
     contentBase: path.resolve(__dirname, 'view/src'),

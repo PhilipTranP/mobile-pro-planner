@@ -11,30 +11,35 @@ import { checkForLogin } from '../actions/userActions';
 
 class App extends Component {
   static propTypes = {
-    user: PropTypes.object,
-    checkForLogin: PropTypes.func.isRequired
+    isLoggedIn: PropTypes.bool,
+    checkForLogin: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired
   }
 
   componentDidMount() {
-    if(!this.props.user.isLoggedIn) this.props.checkForLogin();
+    if(!this.props.isLoggedIn) this.props.checkForLogin();
   }
 
   render() {
     return (
       <div>
-        <Navbar />
+        <Navbar history={this.props.history} />
         <Alerts />
-        <RouterOutput />
+        <RouterOutput history={this.props.history} />
       </div>
     );
   }
 }
 
 const mapStateToProps = ({user}) => {
-  return {user};
+  return {
+    isLoggedIn: user.isLoggedIn
+  };
 };
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators({checkForLogin}, dispatch);
+const mapDispatchToProps = (dispatch, {history}) =>
+  bindActionCreators({
+    checkForLogin: checkForLogin(history)
+  }, dispatch);
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
