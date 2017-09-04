@@ -79,7 +79,6 @@ router.post('/login', (req, res) => {
       if(!user) {
         throw new Error('Invalid Username or Password');
       }
-      console.log(user);
       return user;
     })
     .then(user => {

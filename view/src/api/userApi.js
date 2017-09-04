@@ -12,7 +12,6 @@ export const login = credentials =>
   axios.post(`${url}/login`, credentials)
     .then(res => res.data)
     .then(data => {
-      console.log(data);
       return data;
     });
 
