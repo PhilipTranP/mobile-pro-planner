@@ -33,7 +33,8 @@ export default (state=user, action) => {
       };
     case types.USER_REGESTER_REJECTED:
       return {...state, fetching: false};
-
+    case types.USER_LOGOUT:
+      return user;
     default:
       return state;
   }

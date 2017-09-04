@@ -10,7 +10,7 @@ import { logout } from '../../../actions/userActions';
 
 
 const NavBar = props => (
-  <Navbar collapseOnSelect>
+  <Navbar collapseOnSelect fixedTop fluid>
     <Navbar.Header>
       <Navbar.Brand>
         <Link to="/">{name}</Link>
@@ -39,7 +39,9 @@ const NavBar = props => (
 
 NavBar.propTypes = {
   loggedIn: PropTypes.bool,
-  logout: PropTypes.func.isRequired
+  logout: PropTypes.func.isRequired,
+  user: PropTypes.object,
+  history: PropTypes.object.isRequired
 };
 
 const mapStateToProps = ({user}, {history}) => {

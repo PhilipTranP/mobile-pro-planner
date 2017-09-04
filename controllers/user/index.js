@@ -79,6 +79,7 @@ router.post('/login', (req, res) => {
       if(!user) {
         throw new Error('Invalid Username or Password');
       }
+      console.log(user);
       return user;
     })
     .then(user => {
@@ -97,9 +98,8 @@ router.post('/login', (req, res) => {
       res.json({
         token: `JWT ${token}`,
         user: {
-          name: doc.employee.name,
           permissions: doc.permissions,
-          phone: doc.employee.phonenumber
+          employee: doc.employee
         }
       })
     )

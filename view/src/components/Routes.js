@@ -15,11 +15,10 @@ class Routes extends Component {
       <div className="container">
         <Switch>
           <Route exact path="/" render={()=> <h1>home</h1>} />
-          <Route path="/register" component={Register} />
-          {/*isLoggedIn || [
+          {!this.props.isLoggedIn && [
             <Route path="/login" component={Login} key="login" />,
             <Route path="/register" component={Register} key="register" />
-          ]*/}
+          ]}
         </Switch>
       </div>
     );

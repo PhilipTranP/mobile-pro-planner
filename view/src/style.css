@@ -1,0 +1,14 @@
+body {
+  padding-top: 70px;
+}
+
+.navbar {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.form {
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border: 2px solid black;
+  border-radius: 5px;
+}

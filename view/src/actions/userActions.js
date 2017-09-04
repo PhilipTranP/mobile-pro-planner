@@ -31,7 +31,8 @@ export const login = history => credentials => dispatch => {
         flashMessage('danger', 'Incorrect username or password')(dispatch);
       }
     })
-    .catch(() => {
+    .catch((e) => {
+      console.log(e);
       dispatch({type: types.USER_LOGIN_REJECTED});
       flashMessage('warning', 'Something went wrong while logging in. please try again.')(dispatch);
     });
