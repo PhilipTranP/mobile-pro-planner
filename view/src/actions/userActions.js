@@ -6,7 +6,7 @@ import JWT from 'jwt-client';
 export const checkForLogin = history => () => dispatch => {
   try {
     if(JWT.validate(JWT.remember()))
-      dispatch({type: types.USER_RESUME, payload: localStorage.getItem('user')});
+      dispatch({type: types.USER_RESUME, payload: JSON.parse(localStorage.getItem('user'))});
 
     else history.push('/login');
   } catch (e) {
@@ -25,7 +25,7 @@ export const login = history => credentials => dispatch => {
         dispatch({type: types.USER_LOGIN_FULFILLED, payload: data.user});
         flashMessage('success', 'You are now logged in')(dispatch);
         history.push('/');
-        localStorage.setItem('user', data.user);
+        localStorage.setItem('user', JSON.stringify(data.user));
       } else {
         dispatch({type: types.USER_LOGIN_REJECTED});
         flashMessage('danger', 'Incorrect username or password')(dispatch);
@@ -51,7 +51,7 @@ export const register = history => userInfo => dispatch => {
         dispatch({type: types.USER_REGISTER_FULFILLED, payload: data.user});
         flashMessage('success', 'You are now registered and logged in')(dispatch);
         history.push('/');
-        localStorage.setItem('user', data.user);
+        localStorage.setItem('user', JSON.stringify(data.user));
       }
     })
     .catch(() => {

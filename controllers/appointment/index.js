@@ -10,7 +10,7 @@ router.put('/', (req, res) => {
   if(!checkPermissions(req.user, 2)) return lowPermissions(res);
   const { appointment } = req.body;
   // Validate input
-  if(!(appointment && appointment.customer && appointment.date && appointment.address))
+  if(!(appointment && appointment.customer && appointment.startDate && appointment.endDate && appointment.address))
     return res.status(400).send();
   Appointment.add(appointment)
     .then(appt => res.json(appt))

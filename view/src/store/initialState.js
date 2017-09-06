@@ -4,5 +4,13 @@ export default {
     isLoggedIn: false,
     fetching: false
   },
-  alerts: []
+  alerts: [],
+  schedule: {
+    fetching: false,
+    appointments: []
+  },
+  customers: {
+    fetching: false,
+    customers: []
+  }
 };

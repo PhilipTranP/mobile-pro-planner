@@ -14,7 +14,11 @@ const appointment = new Schema({
   },
   address: Address,
   comments: [Comment],
-  date: {
+  startDate: {
+    type: Date,
+    required: true
+  },
+  endDate: {
     type: Date,
     required: true
   },

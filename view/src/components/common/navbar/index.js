@@ -18,6 +18,17 @@ const NavBar = props => (
       <Navbar.Toggle />
     </Navbar.Header>
     <Navbar.Collapse>
+      {(props.user && props.user.permissions && (
+        <Nav>
+          <NavDropdown title="Customer" id="cx">
+            {props.user.permissions > 1 && ([
+              <MenuItem key="add" onSelect={()=>props.history.push('/customer/add')}>Add</MenuItem>,
+              <MenuItem key="divider" divider />
+            ])}
+            <MenuItem onSelect={()=>props.history.push('/customer')}>View All</MenuItem>
+          </NavDropdown>
+        </Nav>
+      ))}
       <Nav pullRight>
         {(!props.loggedIn && [
           <Navlink url="/login" text="Login" key="login" />,
@@ -27,9 +38,9 @@ const NavBar = props => (
             <MenuItem header>{props.user && props.user.employee.name}</MenuItem>
             <MenuItem divider />
             <MenuItem onSelect={()=>props.history.push('/')}>Home</MenuItem>
+            <MenuItem onSelect={()=>props.history.push('/dashboard')}>Dashboard</MenuItem>
             <MenuItem divider />
             <MenuItem onSelect={props.logout}>Logout</MenuItem>
-
           </NavDropdown>
         )}
       </Nav>

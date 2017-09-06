@@ -19,7 +19,6 @@ router.get('/', (req, res) => {
   );
   return Promise.all(promises)
     .then(values => {
-      console.log(values);
       return {
         appointments: values[0],
         hotelStays: values[1]
